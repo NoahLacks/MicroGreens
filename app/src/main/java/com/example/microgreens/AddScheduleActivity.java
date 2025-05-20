@@ -1,5 +1,6 @@
 package com.example.microgreens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class AddScheduleActivity extends AppCompatActivity implements RecyclerViewInterface {
 
     private TextInputEditText plantNameET;
+    private TextInputEditText plantDateET;
 
     private Task_RecyclerViewAdapter adapter;
 
@@ -33,6 +35,9 @@ public class AddScheduleActivity extends AppCompatActivity implements RecyclerVi
             return insets;
         });
 
+        Log.d("test", String.valueOf(MainActivity.plantModels.size()));
+        Log.d("test", String.valueOf(getIntent().getIntExtra("pos", -1)));
+
         if (!MainActivity.plantModels.isEmpty()) {
             plantModel = MainActivity.plantModels.get(getIntent().getIntExtra("pos", -1));
         } else {
@@ -46,8 +51,10 @@ public class AddScheduleActivity extends AppCompatActivity implements RecyclerVi
         RecyclerView recyclerView = findViewById(R.id.mainRV2);
 
         plantNameET = findViewById(R.id.plantNameET);
+        plantDateET = findViewById(R.id.plantDateET);
 
         plantNameET.setText(plantModel.getName());
+        plantDateET.setText(plantModel.getDate());
 
         adapter = new Task_RecyclerViewAdapter(this, plantModel, this);
         recyclerView.setAdapter(adapter);
@@ -65,12 +72,18 @@ public class AddScheduleActivity extends AppCompatActivity implements RecyclerVi
 
         finishedFAB.setOnClickListener((v) -> {
             plantModel.setName(String.valueOf(plantNameET.getText()));
+            plantModel.setDate(String.valueOf(plantDateET.getText()));
+
+            startActivity(new Intent(this, MainActivity.class));
         });
     }
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(this, TaskActivity.class);
+        intent.putExtra("modelPos", getIntent().getIntExtra("pos", -1));
+        intent.putExtra("taskPos", position);
+        startActivity(intent);
     }
 
     @Override

@@ -73,6 +73,19 @@ public class Task_RecyclerViewAdapter extends RecyclerView.Adapter<Task_Recycler
 
             taskNoteTV = itemView.findViewById(R.id.notesTV);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface != null) {
+                        int pos = getAdapterPosition();
+
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
+
             itemView.findViewById(R.id.imageButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

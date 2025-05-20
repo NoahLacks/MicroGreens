@@ -39,12 +39,14 @@ public class Plant_RecyclerViewAdapter extends RecyclerView.Adapter<Plant_Recycl
 
     @Override
     public void onBindViewHolder(@NonNull Plant_RecyclerViewAdapter.MyViewHolder holder, int position) {
+        Log.d("test", "tester");
         holder.nameTV.setText(plantModels.get(position).getName());
         holder.dateTV.setText(plantModels.get(position).getDate());
     }
 
     @Override
     public int getItemCount() {
+        Log.d("test", String.valueOf(plantModels.size()));
         return plantModels.size();
     }
 

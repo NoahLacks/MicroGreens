@@ -3,6 +3,8 @@ package com.example.microgreens;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewInterface {
@@ -35,14 +38,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         });
 
         if (plantModels == null) {
-            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+            /*SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
             Gson gson = new Gson();
             String j = sharedPreferences.getString("Plants", gson.toJson(new PlantModel()));
             plantModels = gson.fromJson(j, ArrayList.class);
+            Log.d("test", String.valueOf(plantModels));
 
-            if (plantModels == null) {
-                plantModels = new ArrayList<PlantModel>();
-            }
+            Failed way to save objects
+            */
+
+            plantModels = new ArrayList<>();
+            plantModels.add(new PlantModel());
+            Log.d("test", "added model");
+            plantModels.get(0).setName("david");
+            Log.d("test", "set david");
+            Log.d("test", String.valueOf(plantModels));
+
         }
 
         RecyclerView recyclerView = findViewById(R.id.mainRV);
@@ -54,7 +65,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         FloatingActionButton addScheduleButton = findViewById(R.id.addScheduleFAB);
 
         addScheduleButton.setOnClickListener((v) -> {
-            openActivity(AddScheduleActivity.class);
+            MainActivity.plantModels.add(new PlantModel());
+            Intent intent = new Intent(this, AddScheduleActivity.class);
+            intent.putExtra("pos", plantModels.size() - 1);
+            startActivity(intent);
         });
     }
 
@@ -75,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         startActivity(new Intent(this, activity));
     }
 
+    /*
     @Override
     protected void onPause() {
         super.onPause();
@@ -86,4 +101,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         preferencesEditor.putString("Plants", json);
         preferencesEditor.apply();
     }
+    */
 }
